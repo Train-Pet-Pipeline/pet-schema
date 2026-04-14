@@ -1,0 +1,124 @@
+[
+  {
+    "scene_desc": "白天，正常进食",
+    "output": {
+      "schema_version": "1.0",
+      "pet_present": true,
+      "pet_count": 1,
+      "pet": {
+        "species": "cat",
+        "breed_estimate": "british_shorthair",
+        "id_tag": "grey_shorthair_medium",
+        "id_confidence": 0.83,
+        "action": {
+          "primary": "eating",
+          "distribution": {
+            "eating": 0.76, "drinking": 0.00,
+            "sniffing_only": 0.14, "leaving_bowl": 0.05,
+            "sitting_idle": 0.03, "other": 0.02
+          }
+        },
+        "eating_metrics": {
+          "speed": {"fast": 0.08, "normal": 0.71, "slow": 0.21},
+          "engagement": 0.74,
+          "abandoned_midway": 0.12
+        },
+        "mood": {
+          "alertness": 0.28,
+          "anxiety": 0.09,
+          "engagement": 0.76
+        },
+        "body_signals": {
+          "posture": "relaxed",
+          "ear_position": "forward"
+        },
+        "anomaly_signals": {
+          "vomit_gesture": 0.02, "food_rejection": 0.09,
+          "excessive_sniffing": 0.16, "lethargy": 0.04, "aggression": 0.01
+        }
+      },
+      "bowl": {
+        "food_fill_ratio": 0.42,
+        "water_fill_ratio": null,
+        "food_type_visible": "dry"
+      },
+      "scene": {
+        "lighting": "bright",
+        "image_quality": "clear",
+        "confidence_overall": 0.85
+      },
+      "narrative": "灰色英短以正常速度进食干粮，碗内余粮约42%，状态放松，偶尔抬头观察。"
+    }
+  },
+  {
+    "scene_desc": "夜视红外，无宠物",
+    "output": {
+      "schema_version": "1.0",
+      "pet_present": false,
+      "pet_count": 0,
+      "pet": null,
+      "bowl": {
+        "food_fill_ratio": 0.88,
+        "water_fill_ratio": null,
+        "food_type_visible": "dry"
+      },
+      "scene": {
+        "lighting": "infrared_night",
+        "image_quality": "clear",
+        "confidence_overall": 0.92
+      },
+      "narrative": "无宠物，碗内余粮充足约88%，夜视模式。"
+    }
+  },
+  {
+    "scene_desc": "挑食拒食，视觉特征部分遮挡",
+    "output": {
+      "schema_version": "1.0",
+      "pet_present": true,
+      "pet_count": 1,
+      "pet": {
+        "species": "cat",
+        "breed_estimate": "orange_tabby",
+        "id_tag": "orange_tabby_large",
+        "id_confidence": 0.71,
+        "action": {
+          "primary": "sniffing_only",
+          "distribution": {
+            "eating": 0.08, "drinking": 0.00,
+            "sniffing_only": 0.67, "leaving_bowl": 0.18,
+            "sitting_idle": 0.05, "other": 0.02
+          }
+        },
+        "eating_metrics": {
+          "speed": {"fast": 0.02, "normal": 0.15, "slow": 0.83},
+          "engagement": 0.31,
+          "abandoned_midway": 0.74
+        },
+        "mood": {
+          "alertness": 0.52,
+          "anxiety": 0.41,
+          "engagement": 0.28
+        },
+        "body_signals": {
+          "posture": "tense",
+          "ear_position": "unobservable"
+        },
+        "anomaly_signals": {
+          "vomit_gesture": 0.06, "food_rejection": 0.78,
+          "excessive_sniffing": 0.71, "lethargy": 0.12, "aggression": 0.03
+        }
+      },
+      "bowl": {
+        "food_fill_ratio": 0.91,
+        "water_fill_ratio": null,
+        "food_type_visible": "wet"
+      },
+      "scene": {
+        "lighting": "dim",
+        "image_quality": "partially_occluded",
+        "confidence_overall": 0.62
+      },
+      "narrative": "橘猫反复嗅闻湿粮后未进食，身体略微紧绷，有明显拒食迹象，碗内余量约91%。"
+    }
+  }
+]

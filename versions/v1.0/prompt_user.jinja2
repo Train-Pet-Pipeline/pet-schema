@@ -1,0 +1,76 @@
+[图像帧]
+
+请分析这张喂食器摄像头图像，严格按以下 Schema 输出 JSON：
+
+{
+  "schema_version": "1.0",
+  "pet_present": <true|false>,
+  "pet_count": <0-4 的整数>,
+
+  "pet": {
+    "species": <"cat"|"dog"|"unknown">,
+    "breed_estimate": <品种描述字符串，如 "british_shorthair"，不确定写 "mixed_unknown">,
+    "id_tag": <用外观特征描述，如 "orange_tabby_large"，用于同一设备上区分多宠>,
+    "id_confidence": <0.00-1.00>,
+
+    "action": {
+      "primary": <distribution 中概率最高的动作标签>,
+      "distribution": {
+        "eating":       <0.00-1.00>,
+        "drinking":     <0.00-1.00>,
+        "sniffing_only":<0.00-1.00>,
+        "leaving_bowl": <0.00-1.00>,
+        "sitting_idle": <0.00-1.00>,
+        "other":        <0.00-1.00>
+      }
+    },
+
+    "eating_metrics": {
+      "speed": {
+        "fast":   <0.00-1.00>,
+        "normal": <0.00-1.00>,
+        "slow":   <0.00-1.00>
+      },
+      "engagement":      <0.00-1.00，1=全神贯注进食>,
+      "abandoned_midway":<0.00-1.00，1=明确中途放弃>
+    },
+
+    "mood": {
+      "alertness":  <0.00-1.00，1=高度警觉>,
+      "anxiety":    <0.00-1.00，1=明显焦虑>,
+      "engagement": <0.00-1.00，1=高度投入>
+    },
+
+    "body_signals": {
+      "posture": <"relaxed"|"tense"|"hunched"|"unobservable">,
+      "ear_position": <"forward"|"flat"|"rotating"|"unobservable">
+    },
+
+    "anomaly_signals": {
+      "vomit_gesture":      <0.00-1.00，检测到呕吐前姿态序列>,
+      "food_rejection":     <0.00-1.00，嗅闻后明确拒绝进食>,
+      "excessive_sniffing": <0.00-1.00，异常长时间嗅闻不进食，>30秒>,
+      "lethargy":           <0.00-1.00，动作迟缓无力，相比正常明显减慢>,
+      "aggression":         <0.00-1.00，攻击性行为>
+    }
+  },
+
+  "bowl": {
+    "food_fill_ratio":  <0.00-1.00，0=空碗，1=满碗；无法判断写 null>,
+    "water_fill_ratio": <0.00-1.00；无水碗写 null>,
+    "food_type_visible":<"dry"|"wet"|"mixed"|"unknown">
+  },
+
+  "scene": {
+    "lighting":           <"bright"|"dim"|"infrared_night">,
+    "image_quality":      <"clear"|"blurry"|"partially_occluded">,
+    "confidence_overall": <0.00-1.00，本次整体分析置信度>
+  },
+
+  "narrative": "<80字以内，客观描述当前可见行为，不拟人化>"
+}
+
+{% if few_shot_examples %}
+参考示例（格式参考，不要复制内容）：
+{{ few_shot_examples }}
+{% endif %}

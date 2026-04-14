@@ -3,7 +3,8 @@
   "title": "PetFeederEvent",
   "version": "1.0",
   "type": "object",
-  "required": ["schema_version", "pet_present", "pet_count", "bowl", "scene", "narrative"],
+  "required": ["schema_version", "pet_present", "pet_count", "pet", "bowl", "scene", "narrative"],
+  "additionalProperties": false,
   "properties": {
     "schema_version": {"type": "string", "enum": ["1.0"]},
     "pet_present": {"type": "boolean"},

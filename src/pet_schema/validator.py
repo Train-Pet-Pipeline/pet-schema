@@ -95,10 +95,11 @@ def _extra_validations(data: dict[str, Any]) -> list[str]:
 
         primary = pet.get("action", {}).get("primary")
         if dist and primary:
-            max_key = max(dist, key=lambda k: float(dist[k]))
-            if primary != max_key:
+            max_val = max(float(v) for v in dist.values())
+            max_keys = [k for k, v in dist.items() if float(v) == max_val]
+            if primary not in max_keys:
                 errors.append(
-                    f"action.primary '{primary}' 不是 distribution 中最高概率的 key '{max_key}'"
+                    f"action.primary '{primary}' 不是 distribution 中最高概率的 key '{max_keys}'"
                 )
 
         speed = pet.get("eating_metrics", {}).get("speed", {})

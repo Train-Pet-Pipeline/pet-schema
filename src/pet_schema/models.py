@@ -136,4 +136,4 @@ class PetFeederEvent(BaseModel):
     pet: PetInfo | None
     bowl: BowlInfo
     scene: SceneInfo
-    narrative: str = Field(max_length=80)
+    narrative: str = Field(min_length=1, max_length=80)

@@ -120,6 +120,6 @@
         "confidence_overall": {"type": "number", "minimum": 0.0, "maximum": 1.0}
       }
     },
-    "narrative": {"type": "string", "maxLength": 80}
+    "narrative": {"type": "string", "minLength": 1, "maxLength": 80}
   }
 }

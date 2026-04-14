@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
 
 import jsonschema
 
@@ -59,7 +60,7 @@ def validate_output(json_str: str, version: str = "1.0") -> ValidationResult:
     return ValidationResult(valid=len(errors) == 0, errors=errors, warnings=warnings)
 
 
-def _extra_validations(data: dict) -> list[str]:
+def _extra_validations(data: dict[str, Any]) -> list[str]:
     """Business-rule validations that JSON Schema cannot express.
 
     Checks:

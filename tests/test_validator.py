@@ -2,9 +2,7 @@
 import copy
 import json
 
-import pytest
-
-from pet_schema.validator import ValidationResult, validate_output
+from pet_schema.validator import validate_output
 
 
 class TestValidateOutputValid:

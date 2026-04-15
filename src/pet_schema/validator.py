@@ -106,10 +106,13 @@ def _extra_validations(data: dict[str, Any]) -> list[str]:
         speed = pet.get("eating_metrics", {}).get("speed", {})
         if speed:
             total = sum(float(v) for v in speed.values())
-            if abs(total - 1.0) > 0.01:
-                errors.append(
-                    f"eating_metrics.speed 求和 {total:.4f} 超出 1.0±0.01"
-                )
+            # 当宠物不在进食时（action.primary 非 eating/drinking），speed 分布全 0 合法
+            is_eating = primary in ("eating", "drinking")
+            if total > 0 or is_eating:
+                if abs(total - 1.0) > 0.01:
+                    errors.append(
+                        f"eating_metrics.speed 求和 {total:.4f} 超出 1.0±0.01"
+                    )
 
     narrative = data.get("narrative", "")
     if len(narrative) > 80:

@@ -94,3 +94,31 @@ class TestValidateOutputExtraValidations:
         data["narrative"] = "这" * 80
         result = validate_output(json.dumps(data))
         assert result.valid is True
+
+    def test_speed_all_zero_when_not_eating(self, valid_eating_output):
+        """speed 分布全 0 在非进食场景下应该合法。"""
+        data = copy.deepcopy(valid_eating_output)
+        data["pet"]["action"]["primary"] = "other"
+        data["pet"]["action"]["distribution"] = {
+            "eating": 0.00, "drinking": 0.00,
+            "sniffing_only": 0.00, "leaving_bowl": 0.00,
+            "sitting_idle": 0.00, "other": 1.00,
+        }
+        data["pet"]["eating_metrics"]["speed"] = {"fast": 0.00, "normal": 0.00, "slow": 0.00}
+        result = validate_output(json.dumps(data))
+        assert result.valid is True
+        assert not any("speed" in e for e in result.errors)
+
+    def test_speed_nonzero_must_sum_to_one(self, valid_eating_output):
+        """speed 分布非 0 但求和不为 1 应报错。"""
+        data = copy.deepcopy(valid_eating_output)
+        data["pet"]["action"]["primary"] = "other"
+        data["pet"]["action"]["distribution"] = {
+            "eating": 0.00, "drinking": 0.00,
+            "sniffing_only": 0.00, "leaving_bowl": 0.00,
+            "sitting_idle": 0.00, "other": 1.00,
+        }
+        data["pet"]["eating_metrics"]["speed"] = {"fast": 0.30, "normal": 0.30, "slow": 0.00}
+        result = validate_output(json.dumps(data))
+        assert result.valid is False
+        assert any("speed" in e for e in result.errors)

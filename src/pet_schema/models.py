@@ -54,7 +54,8 @@ class SpeedDistribution(BaseModel):
     @model_validator(mode="after")
     def check_sum(self) -> SpeedDistribution:
         total = self.fast + self.normal + self.slow
-        if abs(total - 1.0) > 0.01:
+        # 全零合法（非进食行为时 speed 无意义），非零时必须求和为 1.0
+        if total > 0 and abs(total - 1.0) > 0.01:
             msg = f"speed distribution sum is {total:.4f}, must be 1.0 +/- 0.01"
             raise ValueError(msg)
         return self
@@ -109,6 +110,17 @@ class PetInfo(BaseModel):
     mood: Mood
     body_signals: BodySignals
     anomaly_signals: AnomalySignals
+
+    @model_validator(mode="after")
+    def check_speed_when_eating(self) -> PetInfo:
+        """Eating 时 speed 分布不能全零。"""
+        if self.action.primary == "eating":
+            s = self.eating_metrics.speed
+            total = s.fast + s.normal + s.slow
+            if total == 0:
+                msg = "speed distribution must not be all-zero when primary action is eating"
+                raise ValueError(msg)
+        return self
 
 
 class BowlInfo(BaseModel):

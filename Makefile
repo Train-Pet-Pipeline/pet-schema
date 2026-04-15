@@ -1,7 +1,7 @@
 -include ../pet-infra/shared/Makefile.include
 
-PYTHON := /Users/bamboo/.miniconda3/envs/pet-pipeline/bin/python
-PIP := /Users/bamboo/.miniconda3/envs/pet-pipeline/bin/pip
+PYTHON := python
+PIP := pip
 
 .PHONY: setup test lint clean
 

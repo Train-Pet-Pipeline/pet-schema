@@ -6,7 +6,7 @@ from pathlib import Path
 
 from jinja2 import Template
 
-VERSIONS_DIR = Path(__file__).parent.parent.parent / "versions"
+VERSIONS_DIR = Path(__file__).parent / "versions"
 
 
 def render_prompt(

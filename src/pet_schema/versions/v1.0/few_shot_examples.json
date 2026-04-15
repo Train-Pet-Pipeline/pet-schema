@@ -1,6 +1,6 @@
 [
   {
-    "scene_desc": "白天，正常进食",
+    "scene_desc": "猫正常进食干粮",
     "output": {
       "schema_version": "1.0",
       "pet_present": true,
@@ -47,31 +47,113 @@
         "image_quality": "clear",
         "confidence_overall": 0.85
       },
-      "narrative": "灰色英短以正常速度进食干粮，碗内余粮约42%，状态放松，偶尔抬头观察。"
+      "narrative": "灰色英短以正常速度进食干粮，碗内余粮约42%，状态放松。"
     }
   },
   {
-    "scene_desc": "夜视红外，无宠物",
+    "scene_desc": "狗在喝水",
     "output": {
       "schema_version": "1.0",
-      "pet_present": false,
-      "pet_count": 0,
-      "pet": null,
+      "pet_present": true,
+      "pet_count": 1,
+      "pet": {
+        "species": "dog",
+        "breed_estimate": "golden_retriever",
+        "id_tag": "golden_large_01",
+        "id_confidence": 0.89,
+        "action": {
+          "primary": "drinking",
+          "distribution": {
+            "eating": 0.04, "drinking": 0.82,
+            "sniffing_only": 0.06, "leaving_bowl": 0.03,
+            "sitting_idle": 0.03, "other": 0.02
+          }
+        },
+        "eating_metrics": {
+          "speed": {"fast": 0.00, "normal": 0.00, "slow": 0.00},
+          "engagement": 0.15,
+          "abandoned_midway": 0.05
+        },
+        "mood": {
+          "alertness": 0.22,
+          "anxiety": 0.06,
+          "engagement": 0.68
+        },
+        "body_signals": {
+          "posture": "relaxed",
+          "ear_position": "forward"
+        },
+        "anomaly_signals": {
+          "vomit_gesture": 0.01, "food_rejection": 0.03,
+          "excessive_sniffing": 0.05, "lethargy": 0.02, "aggression": 0.00
+        }
+      },
       "bowl": {
-        "food_fill_ratio": 0.88,
-        "water_fill_ratio": null,
-        "food_type_visible": "dry"
+        "food_fill_ratio": null,
+        "water_fill_ratio": 0.63,
+        "food_type_visible": "unknown"
       },
       "scene": {
-        "lighting": "infrared_night",
+        "lighting": "bright",
         "image_quality": "clear",
-        "confidence_overall": 0.92
+        "confidence_overall": 0.91
       },
-      "narrative": "无宠物，碗内余粮充足约88%，夜视模式。"
+      "narrative": "金毛正在饮水，水碗余量约63%，身体放松，耳朵前倾，状态正常。"
     }
   },
   {
-    "scene_desc": "挑食拒食，视觉特征部分遮挡",
+    "scene_desc": "狗在地上玩球",
+    "output": {
+      "schema_version": "1.0",
+      "pet_present": true,
+      "pet_count": 1,
+      "pet": {
+        "species": "dog",
+        "breed_estimate": "corgi",
+        "id_tag": "corgi_small_02",
+        "id_confidence": 0.80,
+        "action": {
+          "primary": "other",
+          "distribution": {
+            "eating": 0.02, "drinking": 0.01,
+            "sniffing_only": 0.05, "leaving_bowl": 0.02,
+            "sitting_idle": 0.05, "other": 0.85
+          }
+        },
+        "eating_metrics": {
+          "speed": {"fast": 0.00, "normal": 0.00, "slow": 0.00},
+          "engagement": 0.05,
+          "abandoned_midway": 0.02
+        },
+        "mood": {
+          "alertness": 0.72,
+          "anxiety": 0.04,
+          "engagement": 0.88
+        },
+        "body_signals": {
+          "posture": "relaxed",
+          "ear_position": "forward"
+        },
+        "anomaly_signals": {
+          "vomit_gesture": 0.00, "food_rejection": 0.01,
+          "excessive_sniffing": 0.03, "lethargy": 0.01, "aggression": 0.02
+        }
+      },
+      "bowl": {
+        "food_fill_ratio": null,
+        "water_fill_ratio": null,
+        "food_type_visible": "unknown"
+      },
+      "scene": {
+        "lighting": "bright",
+        "image_quality": "clear",
+        "confidence_overall": 0.90
+      },
+      "narrative": "柯基在地面玩球，精神状态活跃，姿态放松，画面中未见碗。"
+    }
+  },
+  {
+    "scene_desc": "猫趴着打盹",
     "output": {
       "schema_version": "1.0",
       "pet_present": true,
@@ -80,45 +162,96 @@
         "species": "cat",
         "breed_estimate": "orange_tabby",
         "id_tag": "orange_tabby_large",
-        "id_confidence": 0.71,
+        "id_confidence": 0.76,
         "action": {
-          "primary": "sniffing_only",
+          "primary": "sitting_idle",
           "distribution": {
-            "eating": 0.08, "drinking": 0.00,
-            "sniffing_only": 0.67, "leaving_bowl": 0.18,
-            "sitting_idle": 0.05, "other": 0.02
+            "eating": 0.01, "drinking": 0.00,
+            "sniffing_only": 0.02, "leaving_bowl": 0.03,
+            "sitting_idle": 0.88, "other": 0.06
           }
         },
         "eating_metrics": {
-          "speed": {"fast": 0.02, "normal": 0.15, "slow": 0.83},
-          "engagement": 0.31,
-          "abandoned_midway": 0.74
+          "speed": {"fast": 0.00, "normal": 0.00, "slow": 0.00},
+          "engagement": 0.04,
+          "abandoned_midway": 0.02
         },
         "mood": {
-          "alertness": 0.52,
-          "anxiety": 0.41,
-          "engagement": 0.28
+          "alertness": 0.10,
+          "anxiety": 0.03,
+          "engagement": 0.06
         },
         "body_signals": {
-          "posture": "tense",
-          "ear_position": "unobservable"
+          "posture": "relaxed",
+          "ear_position": "flat"
         },
         "anomaly_signals": {
-          "vomit_gesture": 0.06, "food_rejection": 0.78,
-          "excessive_sniffing": 0.71, "lethargy": 0.12, "aggression": 0.03
+          "vomit_gesture": 0.00, "food_rejection": 0.02,
+          "excessive_sniffing": 0.01, "lethargy": 0.45, "aggression": 0.00
         }
       },
       "bowl": {
-        "food_fill_ratio": 0.91,
+        "food_fill_ratio": null,
         "water_fill_ratio": null,
-        "food_type_visible": "wet"
+        "food_type_visible": "unknown"
       },
       "scene": {
         "lighting": "dim",
-        "image_quality": "partially_occluded",
-        "confidence_overall": 0.62
+        "image_quality": "clear",
+        "confidence_overall": 0.80
       },
-      "narrative": "橘猫反复嗅闻湿粮后未进食，身体略微紧绷，有明显拒食迹象，碗内余量约91%。"
+      "narrative": "橘猫趴在地上打盹，耳朵贴平，几乎无活动，状态安静。"
+    }
+  },
+  {
+    "scene_desc": "猫弓背紧张，疑似受惊",
+    "output": {
+      "schema_version": "1.0",
+      "pet_present": true,
+      "pet_count": 1,
+      "pet": {
+        "species": "cat",
+        "breed_estimate": "ragdoll",
+        "id_tag": "ragdoll_large_01",
+        "id_confidence": 0.58,
+        "action": {
+          "primary": "other",
+          "distribution": {
+            "eating": 0.02, "drinking": 0.00,
+            "sniffing_only": 0.06, "leaving_bowl": 0.08,
+            "sitting_idle": 0.10, "other": 0.74
+          }
+        },
+        "eating_metrics": {
+          "speed": {"fast": 0.00, "normal": 0.00, "slow": 0.00},
+          "engagement": 0.05,
+          "abandoned_midway": 0.03
+        },
+        "mood": {
+          "alertness": 0.82,
+          "anxiety": 0.70,
+          "engagement": 0.20
+        },
+        "body_signals": {
+          "posture": "hunched",
+          "ear_position": "flat"
+        },
+        "anomaly_signals": {
+          "vomit_gesture": 0.05, "food_rejection": 0.10,
+          "excessive_sniffing": 0.04, "lethargy": 0.03, "aggression": 0.35
+        }
+      },
+      "bowl": {
+        "food_fill_ratio": null,
+        "water_fill_ratio": null,
+        "food_type_visible": "unknown"
+      },
+      "scene": {
+        "lighting": "dim",
+        "image_quality": "blurry",
+        "confidence_overall": 0.52
+      },
+      "narrative": "布偶猫弓背紧张，耳朵贴平，疑似受到惊吓，画面模糊置信度较低。"
     }
   }
 ]

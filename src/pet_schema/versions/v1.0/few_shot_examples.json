@@ -149,7 +149,7 @@
         "image_quality": "clear",
         "confidence_overall": 0.90
       },
-      "narrative": "柯基在地面玩球，精神状态活跃，姿态放松，画面中未见碗。"
+      "narrative": "柯基在地面玩球，精神状态活跃，姿态放松。"
     }
   },
   {
@@ -252,6 +252,26 @@
         "confidence_overall": 0.52
       },
       "narrative": "布偶猫弓背紧张，耳朵贴平，疑似受到惊吓，画面模糊置信度较低。"
+    }
+  },
+  {
+    "scene_desc": "空场景，无宠物",
+    "output": {
+      "schema_version": "1.0",
+      "pet_present": false,
+      "pet_count": 0,
+      "pet": null,
+      "bowl": {
+        "food_fill_ratio": null,
+        "water_fill_ratio": null,
+        "food_type_visible": "unknown"
+      },
+      "scene": {
+        "lighting": "bright",
+        "image_quality": "clear",
+        "confidence_overall": 0.95
+      },
+      "narrative": "画面中无宠物，光线充足，环境清洁。"
     }
   }
 ]

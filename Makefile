@@ -1,7 +1,7 @@
 -include ../pet-infra/shared/Makefile.include
 
 PYTHON := python
-PIP := pip
+PIP := python -m pip
 
 .PHONY: setup test lint clean
 

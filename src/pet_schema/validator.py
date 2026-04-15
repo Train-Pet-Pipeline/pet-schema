@@ -8,7 +8,7 @@ from typing import Any
 
 import jsonschema
 
-VERSIONS_DIR = Path(__file__).parent.parent.parent / "versions"
+VERSIONS_DIR = Path(__file__).parent / "versions"
 
 
 @dataclass

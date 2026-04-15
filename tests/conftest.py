@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-VERSIONS_DIR = Path(__file__).parent.parent / "versions"
+VERSIONS_DIR = Path(__file__).parent.parent / "src" / "pet_schema" / "versions"
 
 
 @pytest.fixture

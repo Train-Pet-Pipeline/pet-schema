@@ -8,6 +8,6 @@
 3. action.distribution 中所有值之和必须为 1.00（允许浮点误差 ±0.01）
 4. eating_metrics.speed 中所有值之和必须为 1.00（允许浮点误差 ±0.01）
 5. 如果画面中没有宠物，pet_present 设为 false，pet 字段设为 null
-6. narrative 只描述当前帧可见内容，不推断历史，不拟人化，不超过 80 字
+6. narrative 只描述当前帧**实际可见**的内容，不推断历史，不拟人化，不超过 80 字；不要提及画面中不存在的物体（如看不到碗就不提碗，没有宠物就不提进食行为）
 7. body_signals 的 posture 和 ear_position 为枚举值，无法判断时使用 unobservable
 8. 不确定时用低置信度表达，不要给出虚假的高置信度

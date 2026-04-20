@@ -87,3 +87,87 @@ def valid_no_pet_output() -> dict:
         },
         "narrative": "无宠物，碗内余粮充足约88%，夜视模式。",
     }
+
+
+@pytest.fixture
+def vision_event_dict() -> dict:
+    """Minimal valid PetFeederEvent dict matching schema v1.0 (see src/pet_schema/models.py)."""
+    return {
+        "schema_version": "1.0",
+        "pet_present": True,
+        "pet_count": 1,
+        "pet": {
+            "species": "cat",
+            "breed_estimate": "unknown",
+            "id_tag": "grey_shorthair_medium",
+            "id_confidence": 0.85,
+            "action": {
+                "primary": "eating",
+                "distribution": {
+                    "eating": 1.0,
+                    "drinking": 0.0,
+                    "sniffing_only": 0.0,
+                    "leaving_bowl": 0.0,
+                    "sitting_idle": 0.0,
+                    "other": 0.0,
+                },
+            },
+            "eating_metrics": {
+                "speed": {"fast": 0.0, "normal": 1.0, "slow": 0.0},
+                "engagement": 0.8,
+                "abandoned_midway": 0.0,
+            },
+            "mood": {"alertness": 0.7, "anxiety": 0.1, "engagement": 0.8},
+            "body_signals": {"posture": "relaxed", "ear_position": "forward"},
+            "anomaly_signals": {
+                "vomit_gesture": 0.0,
+                "food_rejection": 0.0,
+                "excessive_sniffing": 0.0,
+                "lethargy": 0.0,
+                "aggression": 0.0,
+            },
+        },
+        "bowl": {
+            "food_fill_ratio": 0.5,
+            "water_fill_ratio": None,
+            "food_type_visible": "dry",
+        },
+        "scene": {
+            "lighting": "bright",
+            "image_quality": "clear",
+            "confidence_overall": 0.9,
+        },
+        "narrative": "a cat eating from a metal bowl",
+    }
+
+
+@pytest.fixture
+def vision_annotation_dict(vision_event_dict) -> dict:
+    return {
+        "annotation_id": "ann-v1",
+        "sample_id": "s1",
+        "annotator_type": "vlm",
+        "annotator_id": "qwen2_vl_1b_pretrained",
+        "modality": "vision",
+        "created_at": "2026-04-20T00:00:00",
+        "schema_version": "2.0.0",
+        "raw_response": '{"action": "eating"}',
+        "parsed": vision_event_dict,
+        "prompt_hash": "sha256:deadbeef",
+    }
+
+
+@pytest.fixture
+def audio_annotation_dict() -> dict:
+    return {
+        "annotation_id": "ann-a1",
+        "sample_id": "s2",
+        "annotator_type": "cnn",
+        "annotator_id": "audio_cnn_v1",
+        "modality": "audio",
+        "created_at": "2026-04-20T00:00:00",
+        "schema_version": "2.0.0",
+        "predicted_class": "bark",
+        "class_probs": {"bark": 0.9, "meow": 0.1},
+        "logits": None,
+    }

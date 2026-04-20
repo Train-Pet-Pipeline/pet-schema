@@ -1,0 +1,90 @@
+from __future__ import annotations
+
+from datetime import datetime
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict
+
+from pet_schema.enums import Modality
+
+
+class QuantConfig(BaseModel):
+    """Quantization configuration for a model checkpoint."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    method: Literal["gptq", "awq", "ptq_int8", "qat", "fp16", "none"]
+    bits: int | None = None
+    group_size: int | None = None
+    calibration_dataset_uri: str | None = None
+
+
+class EdgeArtifact(BaseModel):
+    """Edge-deployment artifact metadata for a compiled model file."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    format: Literal["rkllm", "rknn", "onnx", "gguf"]
+    target_hardware: list[str]
+    artifact_uri: str
+    sha256: str
+    size_bytes: int
+    min_firmware: str | None = None
+    input_shape: dict[str, list[int]]
+
+
+class ResourceSpec(BaseModel):
+    """Hardware resource requirements for a training run."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    gpu_count: int
+    gpu_memory_gb: int
+    cpu_count: int
+    estimated_hours: float
+
+
+class ModelCard(BaseModel):
+    """Canonical model card contract shared across the Train-Pet-Pipeline."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    # Identity
+    id: str
+    version: str
+    modality: Modality
+    task: str
+    arch: str
+
+    # Reproducibility
+    training_recipe: str
+    recipe_id: str | None = None
+    hydra_config_sha: str
+    git_shas: dict[str, str]
+    dataset_versions: dict[str, str]
+
+    # Artifact
+    checkpoint_uri: str
+
+    # Optional downstream
+    quantization: QuantConfig | None = None
+    edge_artifact: EdgeArtifact | None = None
+
+    # Lineage
+    parent_models: list[str] = []
+    lineage_role: Literal["teacher", "student", "sft_base", "dpo_output", "fused"] | None = None
+
+    # Metrics
+    metrics: dict[str, float]
+    gate_status: Literal["pending", "passed", "failed"]
+
+    # Tracing
+    trained_at: datetime
+    trained_by: str
+    clearml_task_id: str | None = None
+    dvc_exp_sha: str | None = None
+    notes: str | None = None
+
+    def to_manifest_entry(self) -> dict[str, object]:
+        """Serialize for pet-ota manifest.json — JSON-ready, keeps Nones."""
+        return self.model_dump(mode="json", exclude_none=False)

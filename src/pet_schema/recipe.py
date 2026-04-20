@@ -5,7 +5,7 @@ cross-stage dependency DAG construction and cycle detection.
 """
 from __future__ import annotations
 
-from typing import Literal, Optional, Union
+from typing import Literal
 
 import networkx as nx
 from pydantic import BaseModel, ConfigDict, model_validator
@@ -43,7 +43,7 @@ class RecipeStage(BaseModel):
     inputs: dict[str, ArtifactRef]
     config_path: str
     depends_on: list[str]
-    condition: Optional[str] = None
+    condition: str | None = None
     on_failure: Literal["stop", "continue", "abort"] = "stop"
 
 
@@ -59,8 +59,8 @@ class AblationAxis(BaseModel):
     name: str
     stage: str
     hydra_path: str
-    values: list[Union[str, int, float, bool]]
-    link_to: Optional[str] = None
+    values: list[str | int | float | bool]
+    link_to: str | None = None
 
 
 class ExperimentRecipe(BaseModel):
@@ -76,7 +76,7 @@ class ExperimentRecipe(BaseModel):
     recipe_id: str
     description: str
     scope: Literal["single_repo", "cross_repo"]
-    owner_repo: Optional[str] = None
+    owner_repo: str | None = None
     schema_version: str
 
     stages: list[RecipeStage]
@@ -87,7 +87,7 @@ class ExperimentRecipe(BaseModel):
     required_plugins: list[str]
 
     @model_validator(mode="after")
-    def _cross_validate(self) -> "ExperimentRecipe":
+    def _cross_validate(self) -> ExperimentRecipe:
         """Cross-validate ablation axes and eagerly detect DAG cycles."""
         stage_names = {s.name for s in self.stages}
         for axis in self.variations:

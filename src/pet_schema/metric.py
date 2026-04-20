@@ -3,7 +3,7 @@ from __future__ import annotations
 import hashlib
 import math
 from datetime import datetime
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -36,7 +36,7 @@ class GateCheck(BaseModel):
         actual: float,
         threshold: float,
         comparator: str,
-    ) -> "GateCheck":
+    ) -> GateCheck:
         """Evaluate a gate check and return a GateCheck instance with the result.
 
         Args:
@@ -82,7 +82,7 @@ class EvaluationReport(BaseModel):
     gate_status: Literal["passed", "failed", "pending"]
     artifacts: dict[str, str]
     evaluated_at: datetime
-    clearml_task_id: Optional[str] = None
+    clearml_task_id: str | None = None
 
     @model_validator(mode="before")
     @classmethod

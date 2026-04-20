@@ -1,8 +1,6 @@
 import json
 from datetime import datetime
 
-import pytest
-
 from pet_schema.adapters.webdataset import sample_to_wds_dict
 from pet_schema.samples import AudioSample, SensorSample, SourceInfo, VisionSample
 

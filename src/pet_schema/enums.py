@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from enum import Enum
+from enum import StrEnum
 from typing import Literal
 
 Modality = Literal["vision", "audio", "sensor", "multimodal"]
@@ -8,27 +8,27 @@ Modality = Literal["vision", "audio", "sensor", "multimodal"]
 SourceType = Literal["youtube", "community", "device", "synthetic"]
 
 
-class EdgeFormat(str, Enum):
+class EdgeFormat(StrEnum):
     RKLLM = "rkllm"
     RKNN = "rknn"
     ONNX = "onnx"
     GGUF = "gguf"
 
 
-class PetSpecies(str, Enum):
+class PetSpecies(StrEnum):
     CAT = "cat"
     DOG = "dog"
     OTHER = "other"
 
 
-class BowlType(str, Enum):
+class BowlType(StrEnum):
     METAL = "metal"
     CERAMIC = "ceramic"
     PLASTIC = "plastic"
     UNKNOWN = "unknown"
 
 
-class Lighting(str, Enum):
+class Lighting(StrEnum):
     BRIGHT = "bright"
     DIM = "dim"
     DARK = "dark"

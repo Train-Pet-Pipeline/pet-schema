@@ -2,8 +2,8 @@ import pytest
 
 datasets = pytest.importorskip("datasets")
 
-from pet_schema.adapters.hf_features import sample_to_hf_features
-from pet_schema.samples import AudioSample, SensorSample, VisionSample
+from pet_schema.adapters.hf_features import sample_to_hf_features  # noqa: E402
+from pet_schema.samples import AudioSample, SensorSample, VisionSample  # noqa: E402
 
 
 def test_vision_sample_maps_to_features_dict():
@@ -41,9 +41,9 @@ def test_features_are_datasets_feature_types():
 
 def test_unknown_field_type_raises_typeerror():
     # Build a synthetic Pydantic model with an unsupported type
-    from pydantic import BaseModel as _BM
+    from pydantic import BaseModel  # noqa: N814
 
-    class Weird(_BM):
+    class Weird(BaseModel):
         data: bytes   # not supported
 
     with pytest.raises(TypeError):

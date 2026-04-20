@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Annotated, Literal, Optional, Union
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Discriminator
 
@@ -38,11 +38,11 @@ class AudioAnnotation(BaseAnnotation):
     modality: Literal["audio"] = "audio"
     predicted_class: str
     class_probs: dict[str, float]
-    logits: Optional[list[float]] = None
+    logits: list[float] | None = None
 
 
 Annotation = Annotated[
-    Union[VisionAnnotation, AudioAnnotation],
+    VisionAnnotation | AudioAnnotation,
     Discriminator("modality"),
 ]
 
@@ -56,4 +56,4 @@ class DpoPair(BaseModel):
     chosen_annotation_id: str
     rejected_annotation_id: str
     preference_source: Literal["human", "rule", "auto"]
-    reason: Optional[str] = None
+    reason: str | None = None

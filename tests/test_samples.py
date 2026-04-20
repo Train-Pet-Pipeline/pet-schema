@@ -163,6 +163,7 @@ def test_base_sample_schema_version_default():
 
 
 def test_base_sample_is_abstract_like_but_ok_to_construct():
-    # BaseSample itself is a valid Pydantic model; ensure at least one field exists via introspection
+    # BaseSample itself is a valid Pydantic model; ensure at least one field exists via
+    # introspection
     # (protects against accidental deletion of the class body later)
     assert "modality" in BaseSample.model_fields

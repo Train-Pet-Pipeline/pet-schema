@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict
 
@@ -45,7 +45,7 @@ class ConverterConfig(BaseModel):
 
     type: str
     args: dict[str, Any]
-    calibration: Optional[ArtifactRef] = None
+    calibration: ArtifactRef | None = None
 
 
 class DatasetConfig(BaseModel):

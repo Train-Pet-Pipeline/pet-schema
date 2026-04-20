@@ -5,7 +5,6 @@ from pydantic import ValidationError
 
 from pet_schema.metric import EvaluationReport, GateCheck, MetricResult
 
-
 # ---- MetricResult ----
 
 def test_metric_result_instantiates():

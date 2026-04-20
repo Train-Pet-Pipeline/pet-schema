@@ -19,4 +19,4 @@ def test_petspecies_members_cover_cat_dog():
 
 def test_bowl_and_lighting_members():
     assert {b.value for b in BowlType} >= {"metal", "ceramic", "plastic", "unknown"}
-    assert {l.value for l in Lighting} >= {"bright", "dim", "dark"}
+    assert {lit.value for lit in Lighting} >= {"bright", "dim", "dark"}

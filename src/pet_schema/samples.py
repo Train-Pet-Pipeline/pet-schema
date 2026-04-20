@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Annotated, Literal, Optional, Union
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Discriminator
 
@@ -15,7 +15,7 @@ class SourceInfo(BaseModel):
 
     source_type: SourceType
     source_id: str
-    license: Optional[str]
+    license: str | None
 
 
 class BaseSample(BaseModel):
@@ -28,7 +28,7 @@ class BaseSample(BaseModel):
     storage_uri: str
     captured_at: datetime
     source: SourceInfo
-    pet_species: Optional[PetSpecies] = None
+    pet_species: PetSpecies | None = None
     schema_version: str = "2.0.0"
 
 
@@ -39,7 +39,7 @@ class VisionSample(BaseSample):
     frame_width: int
     frame_height: int
     lighting: Lighting
-    bowl_type: Optional[BowlType] = None
+    bowl_type: BowlType | None = None
     blur_score: float
     brightness_score: float
 
@@ -51,8 +51,8 @@ class AudioSample(BaseSample):
     duration_s: float
     sample_rate: int
     num_channels: int
-    snr_db: Optional[float] = None
-    clip_type: Optional[Literal["bark", "meow", "purr", "silence", "ambient"]] = None
+    snr_db: float | None = None
+    clip_type: Literal["bark", "meow", "purr", "silence", "ambient"] | None = None
 
 
 class SensorSample(BaseSample):
@@ -61,11 +61,11 @@ class SensorSample(BaseSample):
     modality: Literal["sensor"] = "sensor"
     sensor_type: str
     readings: dict[str, float]
-    ambient_temp_c: Optional[float] = None
-    ambient_humidity: Optional[float] = None
+    ambient_temp_c: float | None = None
+    ambient_humidity: float | None = None
 
 
 Sample = Annotated[
-    Union[VisionSample, AudioSample, SensorSample],
+    VisionSample | AudioSample | SensorSample,
     Discriminator("modality"),
 ]

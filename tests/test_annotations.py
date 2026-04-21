@@ -1,17 +1,16 @@
 from datetime import datetime
+
 import pytest
 from pydantic import ValidationError
 
 from pet_schema import (
-    BaseAnnotation,
-    LLMAnnotation,
-    ClassifierAnnotation,
-    RuleAnnotation,
-    HumanAnnotation,
     Annotation,
+    ClassifierAnnotation,
     DpoPair,
+    HumanAnnotation,
+    LLMAnnotation,
+    RuleAnnotation,
 )
-
 
 BASE_KW = dict(
     annotation_id="a1",

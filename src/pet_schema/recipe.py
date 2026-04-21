@@ -30,15 +30,15 @@ class ArtifactRef(BaseModel):
 class RecipeStage(BaseModel):
     """A single executable stage in an ExperimentRecipe DAG.
 
-    Only the three "active" registries (trainers, evaluators, converters) may
-    become standalone stages. Passive registries (datasets, metrics, storage)
-    are dependency sources only.
+    Five registries may become standalone stages: trainers, evaluators,
+    converters, datasets (calibration/subset stages), and ota (deploy stages).
+    Passive registries (metrics, storage) are dependency sources only.
     """
 
     model_config = ConfigDict(extra="forbid")
 
     name: str
-    component_registry: Literal["trainers", "evaluators", "converters"]
+    component_registry: Literal["trainers", "evaluators", "converters", "datasets", "ota"]
     component_type: str
     inputs: dict[str, ArtifactRef]
     config_path: str

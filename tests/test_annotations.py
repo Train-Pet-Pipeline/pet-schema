@@ -9,6 +9,7 @@ from pet_schema import (
     RuleAnnotation,
     HumanAnnotation,
     Annotation,
+    DpoPair,
 )
 
 
@@ -136,3 +137,48 @@ def test_annotation_discriminator_unknown_type_rejected():
     ta = TypeAdapter(Annotation)
     with pytest.raises(ValidationError):
         ta.validate_python({**BASE_KW, "annotator_type": "vlm"})  # 旧名应被拒
+
+
+# DpoPair
+def test_dpo_pair_roundtrip():
+    src = DpoPair(
+        pair_id="p1",
+        chosen_annotation_id="a1",
+        rejected_annotation_id="a2",
+        target_id="f1",
+        modality="vision",
+        preference_source="human",
+        reason="reviewer preferred clearer label",
+        created_at=datetime(2026, 4, 21),
+        schema_version="2.1.0",
+    )
+    rt = DpoPair.model_validate_json(src.model_dump_json())
+    assert rt == src
+
+
+def test_dpo_pair_reason_optional():
+    src = DpoPair(
+        pair_id="p2",
+        chosen_annotation_id="a1",
+        rejected_annotation_id="a2",
+        target_id="f1",
+        modality="vision",
+        preference_source="rule",
+        reason=None,
+        created_at=datetime(2026, 4, 21),
+        schema_version="2.1.0",
+    )
+    assert src.reason is None
+
+
+def test_dpo_pair_missing_preference_source():
+    with pytest.raises(ValidationError):
+        DpoPair(
+            pair_id="p1",
+            chosen_annotation_id="a1",
+            rejected_annotation_id="a2",
+            target_id="f1",
+            modality="vision",
+            created_at=datetime(2026, 4, 21),
+            schema_version="2.1.0",
+        )

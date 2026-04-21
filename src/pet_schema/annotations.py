@@ -5,7 +5,7 @@ Spec: docs/superpowers/specs/2026-04-21-phase-2-debt-repayment-design.md §2
 from datetime import datetime
 from typing import Annotated, Literal, Optional
 
-from pydantic import BaseModel, Discriminator
+from pydantic import BaseModel, ConfigDict, Discriminator
 
 from pet_schema.enums import Modality
 
@@ -65,12 +65,16 @@ Annotation = Annotated[
 
 
 class DpoPair(BaseModel):
-    """保留：由 human/llm annotation 衍生出的偏好对。"""
+    """A chosen/rejected annotation pair for DPO training."""
+
+    model_config = ConfigDict(extra="forbid")
 
     pair_id: str
     chosen_annotation_id: str
     rejected_annotation_id: str
     target_id: str
     modality: Modality
+    preference_source: Literal["human", "rule", "auto"]
+    reason: Optional[str] = None
     created_at: datetime
     schema_version: str

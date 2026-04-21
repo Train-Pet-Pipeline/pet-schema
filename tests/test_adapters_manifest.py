@@ -34,7 +34,7 @@ def _mc(id_: str) -> ModelCard:
 def test_empty_list_yields_empty_models():
     m = build_manifest([])
     assert m["models"] == []
-    assert m["schema_version"] == "2.0.0"
+    assert m["schema_version"] == "2.1.0"
     assert "generated_at" in m
 
 

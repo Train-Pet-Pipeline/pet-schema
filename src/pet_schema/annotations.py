@@ -3,7 +3,7 @@
 Spec: docs/superpowers/specs/2026-04-21-phase-2-debt-repayment-design.md §2
 """
 from datetime import datetime
-from typing import Annotated, Literal, Optional
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Discriminator
 
@@ -20,7 +20,7 @@ class BaseAnnotation(BaseModel):
     modality: Modality
     schema_version: str
     created_at: datetime
-    storage_uri: Optional[str] = None
+    storage_uri: str | None = None
 
 
 class LLMAnnotation(BaseAnnotation):
@@ -38,7 +38,7 @@ class ClassifierAnnotation(BaseAnnotation):
     annotator_type: Literal["classifier"] = "classifier"
     predicted_class: str
     class_probs: dict[str, float]
-    logits: Optional[list[float]] = None
+    logits: list[float] | None = None
 
 
 class RuleAnnotation(BaseAnnotation):
@@ -55,7 +55,7 @@ class HumanAnnotation(BaseAnnotation):
     annotator_type: Literal["human"] = "human"
     reviewer: str
     decision: str
-    notes: Optional[str] = None
+    notes: str | None = None
 
 
 Annotation = Annotated[
@@ -75,6 +75,6 @@ class DpoPair(BaseModel):
     target_id: str
     modality: Modality
     preference_source: Literal["human", "rule", "auto"]
-    reason: Optional[str] = None
+    reason: str | None = None
     created_at: datetime
     schema_version: str

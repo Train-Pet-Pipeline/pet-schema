@@ -98,7 +98,7 @@ def test_model_card_hardware_validation_roundtrip():
     assert reloaded.hardware_validation.latency_ms_p95 == 88.0
 
 
-def test_forward_compat_old_card_loads_without_hardware_validation():
+def test_forward_compat_schema_21_card_loads_under_22():
     """A ModelCard without hardware_validation (schema 2.1.0 shape) loads fine."""
     old_card_json = {
         **_base_card_kwargs(),

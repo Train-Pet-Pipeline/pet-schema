@@ -1,4 +1,4 @@
-"""pet-schema 2.3.0 public API.
+"""pet-schema 2.3.1 public API.
 
 Contracts for the multi-model pipeline: Sample / Annotation / ModelCard /
 ExperimentRecipe / EvaluationReport / Hydra Structured Configs.

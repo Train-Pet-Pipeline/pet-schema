@@ -49,7 +49,7 @@ def test_artifact_ref_rejects_unknown_ref_type():
 
 
 def test_recipe_stage_rejects_passive_registry():
-    for bad in ["datasets", "metrics", "storage"]:
+    for bad in ["metrics", "storage"]:
         with pytest.raises(ValidationError):
             RecipeStage(
                 name="x",
@@ -72,6 +72,42 @@ def test_recipe_stage_accepts_active_registries():
             depends_on=[],
         )
         assert s.component_registry == good
+
+
+def test_recipe_stage_accepts_datasets_registry():
+    stage = RecipeStage(
+        name="calibrate",
+        component_registry="datasets",
+        component_type="vision_calibration_subset",
+        inputs={},
+        config_path="configs/smoke/tiny_calibration.yaml",
+        depends_on=["train"],
+    )
+    assert stage.component_registry == "datasets"
+
+
+def test_recipe_stage_accepts_ota_registry():
+    stage = RecipeStage(
+        name="deploy",
+        component_registry="ota",
+        component_type="local_backend",
+        inputs={},
+        config_path="configs/smoke/tiny_deploy.yaml",
+        depends_on=["train"],
+    )
+    assert stage.component_registry == "ota"
+
+
+def test_recipe_stage_rejects_unknown_registry():
+    with pytest.raises(ValidationError):
+        RecipeStage(
+            name="x",
+            component_registry="bogus",  # type: ignore[arg-type]
+            component_type="t",
+            inputs={},
+            config_path="p",
+            depends_on=[],
+        )
 
 
 def test_ablation_axis_values_accept_mixed_types():

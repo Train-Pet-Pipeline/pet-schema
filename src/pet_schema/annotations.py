@@ -1,49 +1,66 @@
-from __future__ import annotations
+"""Annotation contracts — discriminator 按 annotator_type（非 modality）。
 
+Spec: docs/superpowers/specs/2026-04-21-phase-2-debt-repayment-design.md §2
+"""
 from datetime import datetime
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Discriminator
 
 from pet_schema.enums import Modality
-from pet_schema.models import PetFeederEvent
 
 
 class BaseAnnotation(BaseModel):
-    """Base class for all annotation types."""
-
-    model_config = ConfigDict(extra="forbid")
+    """Base class for all annotation paradigms."""
 
     annotation_id: str
-    sample_id: str
-    annotator_type: Literal["vlm", "cnn", "human", "rule"]
+    target_id: str
+    annotator_type: Literal["llm", "classifier", "rule", "human"]
     annotator_id: str
     modality: Modality
-    created_at: datetime
     schema_version: str
+    created_at: datetime
+    storage_uri: str | None = None
 
 
-class VisionAnnotation(BaseAnnotation):
-    """Annotation produced by a vision model; wraps a parsed PetFeederEvent."""
+class LLMAnnotation(BaseAnnotation):
+    """Annotation produced by an LLM/VLM; stores raw response and parsed structured output."""
 
-    modality: Literal["vision"] = "vision"
-    raw_response: str
-    parsed: PetFeederEvent
+    annotator_type: Literal["llm"] = "llm"
     prompt_hash: str
+    raw_response: str
+    parsed_output: dict[str, Any]
 
 
-class AudioAnnotation(BaseAnnotation):
-    """Annotation produced by an audio/CNN model."""
+class ClassifierAnnotation(BaseAnnotation):
+    """Annotation produced by a classifier model (e.g. audio CNN)."""
 
-    modality: Literal["audio"] = "audio"
+    annotator_type: Literal["classifier"] = "classifier"
     predicted_class: str
     class_probs: dict[str, float]
     logits: list[float] | None = None
 
 
+class RuleAnnotation(BaseAnnotation):
+    """Annotation produced by a deterministic rule."""
+
+    annotator_type: Literal["rule"] = "rule"
+    rule_id: str
+    rule_output: dict[str, Any]
+
+
+class HumanAnnotation(BaseAnnotation):
+    """Annotation produced by a human reviewer."""
+
+    annotator_type: Literal["human"] = "human"
+    reviewer: str
+    decision: str
+    notes: str | None = None
+
+
 Annotation = Annotated[
-    VisionAnnotation | AudioAnnotation,
-    Discriminator("modality"),
+    LLMAnnotation | ClassifierAnnotation | RuleAnnotation | HumanAnnotation,
+    Discriminator("annotator_type"),
 ]
 
 
@@ -55,5 +72,9 @@ class DpoPair(BaseModel):
     pair_id: str
     chosen_annotation_id: str
     rejected_annotation_id: str
+    target_id: str
+    modality: Modality
     preference_source: Literal["human", "rule", "auto"]
     reason: str | None = None
+    created_at: datetime
+    schema_version: str

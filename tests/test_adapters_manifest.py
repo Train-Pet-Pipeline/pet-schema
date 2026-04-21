@@ -18,7 +18,6 @@ def _mc(id_: str) -> ModelCard:
         dataset_versions={},
         checkpoint_uri="local:///c",
         quantization=None,
-        edge_artifact=None,
         parent_models=[],
         lineage_role=None,
         metrics={},
@@ -34,7 +33,7 @@ def _mc(id_: str) -> ModelCard:
 def test_empty_list_yields_empty_models():
     m = build_manifest([])
     assert m["models"] == []
-    assert m["schema_version"] == "2.2.0"
+    assert m["schema_version"] == "2.3.0"
     assert "generated_at" in m
 
 

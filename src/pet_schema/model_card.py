@@ -79,6 +79,19 @@ class HardwareValidation(BaseModel):
         return v
 
 
+class DeploymentStatus(BaseModel):
+    """OTA backend deployment result, written back to ModelCard.deployment_history."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    backend: str
+    state: Literal["pending", "deployed", "rolled_back", "failed"]
+    deployed_at: datetime
+    manifest_uri: str | None = None
+    error: str | None = None
+    notes: str | None = None
+
+
 class ModelCard(BaseModel):
     """Canonical model card contract shared across the Train-Pet-Pipeline."""
 
@@ -103,7 +116,9 @@ class ModelCard(BaseModel):
 
     # Optional downstream
     quantization: QuantConfig | None = None
-    edge_artifact: EdgeArtifact | None = None
+    edge_artifacts: list[EdgeArtifact] = []
+    intermediate_artifacts: dict[str, str] = {}
+    deployment_history: list[DeploymentStatus] = []
 
     # Lineage
     parent_models: list[str] = []

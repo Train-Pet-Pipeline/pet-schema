@@ -20,7 +20,6 @@ def _mc(**overrides) -> ModelCard:
         dataset_versions={},
         checkpoint_uri="local:///ckpts/1",
         quantization=None,
-        edge_artifact=None,
         parent_models=[],
         lineage_role=None,
         metrics={"accuracy": 0.9},
@@ -79,7 +78,7 @@ def test_resource_spec_requires_all_fields():
 
 
 def test_model_card_to_manifest_entry_has_required_keys():
-    mc = _mc(edge_artifact=EdgeArtifact(
+    ea = EdgeArtifact(
         format="rkllm",
         target_hardware=["rk3576"],
         artifact_uri="local:///edge/a.rkllm",
@@ -87,12 +86,13 @@ def test_model_card_to_manifest_entry_has_required_keys():
         size_bytes=1234,
         min_firmware=None,
         input_shape={"input": [1, 3, 224, 224]},
-    ))
+    )
+    mc = _mc(edge_artifacts=[ea])
     entry = mc.to_manifest_entry()
     assert entry["id"] == mc.id
     assert entry["version"] == mc.version
     assert entry["checkpoint_uri"] == mc.checkpoint_uri
-    assert entry["edge_artifact"]["format"] == "rkllm"
+    assert entry["edge_artifacts"][0]["format"] == "rkllm"
 
 
 def test_model_card_rejects_extra_field():

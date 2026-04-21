@@ -3,7 +3,7 @@
 Spec: docs/superpowers/specs/2026-04-21-phase-2-debt-repayment-design.md §2
 """
 from datetime import datetime
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Discriminator
 
@@ -29,7 +29,7 @@ class LLMAnnotation(BaseAnnotation):
     annotator_type: Literal["llm"] = "llm"
     prompt_hash: str
     raw_response: str
-    parsed_output: dict
+    parsed_output: dict[str, Any]
 
 
 class ClassifierAnnotation(BaseAnnotation):
@@ -46,7 +46,7 @@ class RuleAnnotation(BaseAnnotation):
 
     annotator_type: Literal["rule"] = "rule"
     rule_id: str
-    rule_output: dict
+    rule_output: dict[str, Any]
 
 
 class HumanAnnotation(BaseAnnotation):

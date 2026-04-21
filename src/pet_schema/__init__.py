@@ -1,4 +1,4 @@
-"""pet-schema 2.1.0 public API.
+"""pet-schema 2.2.0 public API.
 
 Contracts for the multi-model pipeline: Sample / Annotation / ModelCard /
 ExperimentRecipe / EvaluationReport / Hydra Structured Configs.
@@ -28,7 +28,7 @@ from pet_schema.enums import (
     SourceType,
 )
 from pet_schema.metric import EvaluationReport, GateCheck, MetricResult
-from pet_schema.model_card import EdgeArtifact, ModelCard, QuantConfig, ResourceSpec
+from pet_schema.model_card import EdgeArtifact, HardwareValidation, ModelCard, QuantConfig, ResourceSpec
 from pet_schema.models import PetFeederEvent  # legacy v1 — keep importable from top-level
 from pet_schema.recipe import (
     AblationAxis,
@@ -74,6 +74,7 @@ __all__ = [
     "QuantConfig",
     "EdgeArtifact",
     "ResourceSpec",
+    "HardwareValidation",
     # recipe
     "ArtifactRef",
     "RecipeStage",

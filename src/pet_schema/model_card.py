@@ -1,11 +1,14 @@
 from __future__ import annotations
 
+import re
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_validator
 
 from pet_schema.enums import Modality
+
+_VALIDATED_BY_PATTERN = re.compile(r"^(github-actions|operator):[A-Za-z0-9_.\-]+$")
 
 
 class QuantConfig(BaseModel):
@@ -42,6 +45,38 @@ class ResourceSpec(BaseModel):
     gpu_memory_gb: int
     cpu_count: int
     estimated_hours: float
+
+
+class HardwareValidation(BaseModel):
+    """Result of a manual real-hardware validation run, written back to ModelCard.
+
+    Provenance is encoded in ``validated_by``:
+
+    - ``github-actions:<workflow_run_id>`` when written by automation
+    - ``operator:<github_username>``       when written by a human release manager
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    device_id: str
+    firmware_version: str
+    validated_at: datetime
+    latency_ms_p50: float
+    latency_ms_p95: float
+    accuracy: float | None = None
+    kl_divergence: float | None = None
+    validated_by: str
+    notes: str | None = None
+
+    @field_validator("validated_by")
+    @classmethod
+    def _check_validated_by(cls, v: str) -> str:
+        """Enforce provenance prefix so audit tooling can parse the source."""
+        if not _VALIDATED_BY_PATTERN.fullmatch(v):
+            raise ValueError(
+                r"validated_by must match ^(github-actions|operator):[A-Za-z0-9_.\-]+$"
+            )
+        return v
 
 
 class ModelCard(BaseModel):
@@ -84,6 +119,9 @@ class ModelCard(BaseModel):
     clearml_task_id: str | None = None
     dvc_exp_sha: str | None = None
     notes: str | None = None
+
+    # Hardware gate result (written after real-device validation)
+    hardware_validation: HardwareValidation | None = None
 
     def to_manifest_entry(self) -> dict[str, object]:
         """Serialize for pet-ota manifest.json — JSON-ready, keeps Nones."""

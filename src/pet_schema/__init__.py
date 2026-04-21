@@ -1,14 +1,16 @@
-"""pet-schema 2.0.0 public API.
+"""pet-schema 2.1.0 public API.
 
 Contracts for the multi-model pipeline: Sample / Annotation / ModelCard /
 ExperimentRecipe / EvaluationReport / Hydra Structured Configs.
 """
 from pet_schema.annotations import (
     Annotation,
-    AudioAnnotation,
     BaseAnnotation,
+    ClassifierAnnotation,
     DpoPair,
-    VisionAnnotation,
+    HumanAnnotation,
+    LLMAnnotation,
+    RuleAnnotation,
 )
 from pet_schema.configs import (
     ConverterConfig,
@@ -62,8 +64,10 @@ __all__ = [
     # annotations
     "Annotation",
     "BaseAnnotation",
-    "VisionAnnotation",
-    "AudioAnnotation",
+    "LLMAnnotation",
+    "ClassifierAnnotation",
+    "RuleAnnotation",
+    "HumanAnnotation",
     "DpoPair",
     # model card
     "ModelCard",

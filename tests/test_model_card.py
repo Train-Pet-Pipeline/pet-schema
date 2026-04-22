@@ -129,3 +129,28 @@ def test_model_card_to_manifest_entry_excludes_none_false():
     entry = mc.to_manifest_entry()
     assert "quantization" in entry
     assert entry["quantization"] is None
+
+
+def test_resolved_config_uri_default_none():
+    card = ModelCard(
+        id="m1", version="0.1.0", modality="vision", task="caption",
+        arch="qwen2-vl-2b", training_recipe="sft", hydra_config_sha="abc",
+        git_shas={}, dataset_versions={}, checkpoint_uri="s3://x/ckpt",
+        metrics={}, gate_status="pending",
+        trained_at="2026-04-22T00:00:00Z", trained_by="ci",
+    )
+    assert card.resolved_config_uri is None
+
+
+def test_resolved_config_uri_round_trip():
+    card = ModelCard(
+        id="m1", version="0.1.0", modality="vision", task="caption",
+        arch="qwen2-vl-2b", training_recipe="sft", hydra_config_sha="abc",
+        git_shas={}, dataset_versions={}, checkpoint_uri="s3://x/ckpt",
+        metrics={}, gate_status="pending",
+        trained_at="2026-04-22T00:00:00Z", trained_by="ci",
+        resolved_config_uri="s3://artifacts/runs/abc/resolved_config.yaml",
+    )
+    dumped = card.model_dump_json()
+    restored = ModelCard.model_validate_json(dumped)
+    assert restored.resolved_config_uri == "s3://artifacts/runs/abc/resolved_config.yaml"

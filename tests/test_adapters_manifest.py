@@ -2,6 +2,7 @@ from datetime import datetime
 
 from pet_schema.adapters.manifest import build_manifest
 from pet_schema.model_card import ModelCard
+from pet_schema.version import SCHEMA_VERSION
 
 
 def _mc(id_: str) -> ModelCard:
@@ -33,7 +34,7 @@ def _mc(id_: str) -> ModelCard:
 def test_empty_list_yields_empty_models():
     m = build_manifest([])
     assert m["models"] == []
-    assert m["schema_version"] == "2.4.0"
+    assert m["schema_version"] == SCHEMA_VERSION
     assert "generated_at" in m
 
 

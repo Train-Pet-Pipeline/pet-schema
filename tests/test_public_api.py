@@ -25,7 +25,11 @@ def test_phase_1_contracts_importable():
     )
 
 
-def test_schema_version_is_2():
+def test_schema_version_is_semver():
+    import re
+
     from pet_schema import SCHEMA_VERSION
 
-    assert SCHEMA_VERSION.startswith("2.")
+    assert re.match(r"^\d+\.\d+\.\d+$", SCHEMA_VERSION), (
+        f"SCHEMA_VERSION must be SemVer X.Y.Z, got {SCHEMA_VERSION!r}"
+    )

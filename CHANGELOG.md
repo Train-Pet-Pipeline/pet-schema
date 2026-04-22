@@ -1,4 +1,4 @@
-## 2.4.0-rc1 — 2026-04-22
+## 2.4.0 — 2026-04-22
 
 ### Added
 - `ModelCard.resolved_config_uri: str | None = None` — URI of the per-run resolved

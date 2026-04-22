@@ -47,8 +47,18 @@ def _field_type_to_feature(tp: Any) -> Any:
         return Sequence(_field_type_to_feature(inner))
 
     # dict[str, X] — represent as Sequence of {key, value} records (HF-friendly)
+    # Fall back to JSON-string Value("string") for bare dict or nested dict values
+    # (e.g. dict[str, dict[str, float]]) that HF Datasets cannot natively represent.
+    if tp is dict:
+        # bare dict with no type args — JSON-string fallback
+        return Value("string")
     if origin in (dict,):
-        _, v = get_args(tp)
+        args = get_args(tp)
+        _, v = args
+        # nested dict value type — JSON-string fallback
+        v_origin = get_origin(v)
+        if v_origin is dict or v is dict:
+            return Value("string")
         return Sequence({"key": Value("string"), "value": _field_type_to_feature(v)})
 
     # Nested Pydantic model — recurse into its fields

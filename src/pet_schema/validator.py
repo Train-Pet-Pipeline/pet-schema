@@ -10,6 +10,12 @@ import jsonschema
 
 VERSIONS_DIR = Path(__file__).parent / "versions"
 
+CONFIDENCE_WARN_THRESHOLD: float = 0.5
+"""Below this confidence_overall, validate_output emits a warning.
+
+Future: source from params.yaml per CLAUDE.md "all numerics from params.yaml" rule.
+"""
+
 
 @dataclass
 class ValidationResult:
@@ -54,7 +60,7 @@ def validate_output(json_str: str, version: str = "1.0") -> ValidationResult:
 
     warnings: list[str] = []
     scene = data.get("scene", {})
-    if isinstance(scene.get("confidence_overall"), float) and scene["confidence_overall"] < 0.5:
+    if isinstance(scene.get("confidence_overall"), float) and scene["confidence_overall"] < CONFIDENCE_WARN_THRESHOLD:
         warnings.append(f"confidence_overall 偏低: {scene['confidence_overall']}")
 
     return ValidationResult(valid=len(errors) == 0, errors=errors, warnings=warnings)

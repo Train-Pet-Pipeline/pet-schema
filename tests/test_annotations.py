@@ -181,3 +181,30 @@ def test_dpo_pair_missing_preference_source():
             created_at=datetime(2026, 4, 21),
             schema_version="2.1.0",
         )
+
+
+# Extra field rejection on all 4 annotation variants
+def test_annotation_base_extra_fields_rejected():
+    """All 4 annotation variants must reject unknown/typo'd fields."""
+    extra = {"SHOULD_FAIL": "bad"}
+
+    with pytest.raises(ValidationError):
+        LLMAnnotation(
+            **BASE_KW, prompt_hash="abc", raw_response="r", parsed_output={}, **extra
+        )
+
+    with pytest.raises(ValidationError):
+        ClassifierAnnotation(
+            **BASE_KW, predicted_class="x", class_probs={"x": 1.0}, **extra
+        )
+
+    with pytest.raises(ValidationError):
+        RuleAnnotation(**BASE_KW, rule_id="r1", rule_output={}, **extra)
+
+    with pytest.raises(ValidationError):
+        HumanAnnotation(
+            **{**BASE_KW, "annotator_id": "alice"},
+            reviewer="alice",
+            decision="accept",
+            **extra,
+        )

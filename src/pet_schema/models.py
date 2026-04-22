@@ -149,3 +149,21 @@ class PetFeederEvent(BaseModel):
     bowl: BowlInfo
     scene: SceneInfo
     narrative: str = Field(min_length=1, max_length=80)
+
+    @model_validator(mode="after")
+    def _check_pet_present_consistency(self) -> PetFeederEvent:
+        """Enforce pet_present / pet / pet_count cross-field consistency.
+
+        Rules (mirrored from validator._extra_validations):
+        - pet_present=True  → pet must not be None, pet_count must be ≥ 1
+        - pet_present=False → pet must be None
+        """
+        if self.pet_present:
+            if self.pet is None:
+                raise ValueError("pet_present=True but pet is None")
+            if self.pet_count == 0:
+                raise ValueError("pet_present=True but pet_count is 0")
+        else:
+            if self.pet is not None:
+                raise ValueError("pet_present=False but pet is not None")
+        return self

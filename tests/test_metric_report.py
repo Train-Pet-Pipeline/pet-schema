@@ -57,6 +57,16 @@ def test_gate_check_evaluate_rejects_unknown_comparator():
         GateCheck.evaluate("x", 1.0, 1.0, "lt")
 
 
+def test_gate_eq_tolerates_float_rounding():
+    """math.isclose with abs_tol=1e-6 must treat accumulated rounding as equal to threshold.
+
+    0.850000002 has a relative difference of ~2.35e-9 vs 0.85, which exceeds
+    the default rel_tol=1e-9 and abs_tol=0.0 and would fail without abs_tol.
+    """
+    g = GateCheck.evaluate("accuracy", 0.850000002, 0.85, "eq")
+    assert g.passed is True, "float-arithmetic rounding should not fail an eq gate"
+
+
 # ---- EvaluationReport ----
 
 def _report(**overrides):

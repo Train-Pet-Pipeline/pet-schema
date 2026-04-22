@@ -48,3 +48,26 @@ def test_unknown_field_type_raises_typeerror():
 
     with pytest.raises(TypeError):
         sample_to_hf_features(Weird)
+
+
+def test_nested_dict_type_fallback():
+    """bare dict and dict[str, dict[str, float]] must fall back to Value("string"), not raise."""
+    from pydantic import BaseModel
+
+    class WithBareDict(BaseModel):
+        meta: dict  # bare dict, no type args
+
+    class WithNestedDict(BaseModel):
+        scores: dict[str, dict[str, float]]  # nested dict value
+
+    # bare dict
+    feats_bare = sample_to_hf_features(WithBareDict)
+    assert "meta" in feats_bare
+    assert isinstance(feats_bare["meta"], datasets.Value)
+    assert feats_bare["meta"].dtype == "string"
+
+    # nested dict
+    feats_nested = sample_to_hf_features(WithNestedDict)
+    assert "scores" in feats_nested
+    assert isinstance(feats_nested["scores"], datasets.Value)
+    assert feats_nested["scores"].dtype == "string"

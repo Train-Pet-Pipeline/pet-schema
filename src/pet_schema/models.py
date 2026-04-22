@@ -151,7 +151,7 @@ class PetFeederEvent(BaseModel):
     narrative: str = Field(min_length=1, max_length=80)
 
     @model_validator(mode="after")
-    def _check_pet_present_consistency(self) -> "PetFeederEvent":
+    def _check_pet_present_consistency(self) -> PetFeederEvent:
         """Enforce pet_present / pet / pet_count cross-field consistency.
 
         Rules (mirrored from validator._extra_validations):

@@ -60,8 +60,9 @@ def validate_output(json_str: str, version: str = "1.0") -> ValidationResult:
 
     warnings: list[str] = []
     scene = data.get("scene", {})
-    if isinstance(scene.get("confidence_overall"), float) and scene["confidence_overall"] < CONFIDENCE_WARN_THRESHOLD:
-        warnings.append(f"confidence_overall 偏低: {scene['confidence_overall']}")
+    confidence = scene.get("confidence_overall")
+    if isinstance(confidence, float) and confidence < CONFIDENCE_WARN_THRESHOLD:
+        warnings.append(f"confidence_overall 偏低: {confidence}")
 
     return ValidationResult(valid=len(errors) == 0, errors=errors, warnings=warnings)
 

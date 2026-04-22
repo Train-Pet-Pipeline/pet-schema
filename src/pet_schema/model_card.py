@@ -133,6 +133,7 @@ class ModelCard(BaseModel):
     trained_by: str
     clearml_task_id: str | None = None
     dvc_exp_sha: str | None = None
+    resolved_config_uri: str | None = None
     notes: str | None = None
 
     # Hardware gate result (written after real-device validation)

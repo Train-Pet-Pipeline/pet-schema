@@ -43,7 +43,6 @@ class RecipeStage(BaseModel):
     inputs: dict[str, ArtifactRef]
     config_path: str
     depends_on: list[str]
-    condition: str | None = None
     on_failure: Literal["stop", "continue", "abort"] = "stop"
 
 

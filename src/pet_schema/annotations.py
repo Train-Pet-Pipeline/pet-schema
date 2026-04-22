@@ -13,6 +13,8 @@ from pet_schema.enums import Modality
 class BaseAnnotation(BaseModel):
     """Base class for all annotation paradigms."""
 
+    model_config = ConfigDict(extra="forbid")
+
     annotation_id: str
     target_id: str
     annotator_type: Literal["llm", "classifier", "rule", "human"]

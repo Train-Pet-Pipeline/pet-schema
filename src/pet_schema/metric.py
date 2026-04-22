@@ -56,7 +56,10 @@ class GateCheck(BaseModel):
         elif comparator == "le":
             passed = actual <= threshold
         elif comparator == "eq":
-            passed = math.isclose(actual, threshold)
+            # abs_tol=1e-6 covers normal float-arithmetic accumulated rounding
+            # (e.g. mean/sum ops producing ~2e-9 relative error) while remaining
+            # strict enough to catch genuine metric regressions.
+            passed = math.isclose(actual, threshold, abs_tol=1e-6)
         else:
             raise ValueError(f"unknown comparator: {comparator!r}")
         return cls(

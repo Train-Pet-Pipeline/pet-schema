@@ -57,3 +57,40 @@ class TestPetFeederEventParsing:
         data["pet"]["species"] = "hamster"
         with pytest.raises(ValidationError):
             PetFeederEvent.model_validate(data)
+
+
+class TestPetFeederEventInvariants:
+    """Cross-field consistency invariants enforced by model_validator."""
+
+    def test_pet_present_true_requires_pet_not_none(self, valid_eating_output):
+        """pet_present=True with pet=None must be rejected."""
+        data = copy.deepcopy(valid_eating_output)
+        data["pet_present"] = True
+        data["pet"] = None
+        data["pet_count"] = 0
+        with pytest.raises(ValidationError, match="pet_present"):
+            PetFeederEvent.model_validate(data)
+
+    def test_pet_present_true_zero_count_rejected(self, valid_eating_output):
+        """pet_present=True with pet_count=0 must be rejected."""
+        data = copy.deepcopy(valid_eating_output)
+        data["pet_present"] = True
+        data["pet_count"] = 0
+        with pytest.raises(ValidationError, match="pet_present"):
+            PetFeederEvent.model_validate(data)
+
+    def test_pet_present_false_with_pet_object_rejected(self, valid_eating_output):
+        """pet_present=False with a pet object must be rejected."""
+        data = copy.deepcopy(valid_eating_output)
+        data["pet_present"] = False
+        data["pet_count"] = 0
+        # pet remains non-None from valid_eating_output
+        with pytest.raises(ValidationError, match="pet_present"):
+            PetFeederEvent.model_validate(data)
+
+    def test_pet_present_true_valid_passes(self, valid_eating_output):
+        """pet_present=True with pet object and pet_count=1 must succeed."""
+        event = PetFeederEvent.model_validate(valid_eating_output)
+        assert event.pet_present is True
+        assert event.pet is not None
+        assert event.pet_count == 1

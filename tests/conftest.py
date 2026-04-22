@@ -139,35 +139,3 @@ def vision_event_dict() -> dict:
         },
         "narrative": "a cat eating from a metal bowl",
     }
-
-
-@pytest.fixture
-def vision_annotation_dict(vision_event_dict) -> dict:
-    return {
-        "annotation_id": "ann-v1",
-        "sample_id": "s1",
-        "annotator_type": "vlm",
-        "annotator_id": "qwen2_vl_1b_pretrained",
-        "modality": "vision",
-        "created_at": "2026-04-20T00:00:00",
-        "schema_version": "2.0.0",
-        "raw_response": '{"action": "eating"}',
-        "parsed": vision_event_dict,
-        "prompt_hash": "sha256:deadbeef",
-    }
-
-
-@pytest.fixture
-def audio_annotation_dict() -> dict:
-    return {
-        "annotation_id": "ann-a1",
-        "sample_id": "s2",
-        "annotator_type": "cnn",
-        "annotator_id": "audio_cnn_v1",
-        "modality": "audio",
-        "created_at": "2026-04-20T00:00:00",
-        "schema_version": "2.0.0",
-        "predicted_class": "bark",
-        "class_probs": {"bark": 0.9, "meow": 0.1},
-        "logits": None,
-    }

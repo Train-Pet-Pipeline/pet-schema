@@ -17,6 +17,8 @@ jobs:
           - pet-eval
           - pet-quantize
           - pet-ota
+          # pet-id: added 2026-04-23; requires schema_validate.yml in pet-id (see Phase 9 task)
+          - pet-id
     steps:
       - name: Dispatch to ${{ matrix.repo }}
         uses: peter-evans/repository-dispatch@v2

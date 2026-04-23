@@ -170,7 +170,7 @@ def test_base_sample_is_abstract_like_but_ok_to_construct():
 
 
 def test_source_info_ingester_optional_and_carries_string():
-    """SourceInfo.ingester v3.1.0: optional field, defaults None, accepts string, extra still forbidden."""
+    """SourceInfo.ingester v3.1.0: optional, defaults None, string value ok, extra forbidden."""
     # backward compat: constructible without ingester
     si_no_ingester = SourceInfo(source_type="device", source_id="feeder-001", license=None)
     assert si_no_ingester.ingester is None

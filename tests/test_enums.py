@@ -38,8 +38,12 @@ def test_source_type_includes_academic_and_commercial():
         assert t in all_values, f"existing literal {t!r} must still be present"
 
     # new literals can be used in SourceInfo
-    si_academic = SourceInfo(source_type="academic_dataset", source_id="oxford-pet", license="CC-BY-4.0")
+    si_academic = SourceInfo(
+        source_type="academic_dataset", source_id="oxford-pet", license="CC-BY-4.0"
+    )
     assert si_academic.source_type == "academic_dataset"
 
-    si_commercial = SourceInfo(source_type="commercial_licensed", source_id="dataset-xyz", license="commercial-v1")
+    si_commercial = SourceInfo(
+        source_type="commercial_licensed", source_id="dataset-xyz", license="commercial-v1"
+    )
     assert si_commercial.source_type == "commercial_licensed"

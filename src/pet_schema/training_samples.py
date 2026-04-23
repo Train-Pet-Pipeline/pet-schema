@@ -82,3 +82,33 @@ class SFTSample(BaseModel):
     input: str
     output: str
     storage_uri: str | None = None
+
+
+class DPOSample(BaseModel):
+    """DPO preference pair sample in flat format as produced by pet-annotation.
+
+    This is the wire format emitted by ``pet_annotation.export.sft_dpo.to_dpo_pairs``.
+    Fields exactly match the dict keys that function yields.
+
+    For LLM paradigm (the primary case), ``chosen`` and ``rejected`` are raw VLM
+    response strings from two different annotators for the same target, ranked by
+    ``confidence_overall`` from ``parsed_output``.
+
+    For non-LLM paradigms (classifier / rule / human), ``chosen`` and ``rejected``
+    are identical (self-paired) and require downstream augmentation or filtering.
+
+    .. note::
+       LLaMA-Factory's Alpaca DPO mode expects a ``prompt`` field (instruction text)
+       alongside ``chosen``/``rejected``.  pet-annotation's export omits ``prompt``
+       and instead provides ``storage_uri`` as the input reference.  A conversion
+       step is needed before feeding this into LLaMA-Factory.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    sample_id: str
+    chosen: str
+    rejected: str
+    chosen_annotator_id: str
+    rejected_annotator_id: str
+    storage_uri: str | None = None

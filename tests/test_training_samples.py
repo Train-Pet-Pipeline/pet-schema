@@ -1,4 +1,4 @@
-"""Tests for pet_schema.training_samples — SFTSample, ShareGPTTurn, ShareGPTSFTSample."""
+"""Tests for pet_schema.training_samples — SFTSample, DPOSample, ShareGPTTurn."""
 from __future__ import annotations
 
 import json
@@ -7,6 +7,7 @@ import pytest
 from pydantic import ValidationError
 
 from pet_schema.training_samples import (
+    DPOSample,
     SFTSample,
     ShareGPTSFTSample,
     ShareGPTTurn,
@@ -187,3 +188,60 @@ class TestSFTSample:
         s = SFTSample.model_validate_json(line)
         assert s.sample_id == "target-002"
         assert s.storage_uri == "s3://bucket/frame002.jpg"
+
+
+# ---------------------------------------------------------------------------
+# DPOSample (pet-annotation flat DPO export format)
+# ---------------------------------------------------------------------------
+
+
+class TestDPOSample:
+    """Validate flat DPO format produced by pet_annotation.export.sft_dpo.to_dpo_pairs."""
+
+    def _minimal(self) -> dict:
+        return {
+            "sample_id": "target-003",
+            "chosen": '{"scene":{"label":"cat_eating","confidence_overall":0.95}}',
+            "rejected": '{"scene":{"label":"cat_eating","confidence_overall":0.7}}',
+            "chosen_annotator_id": "llm-gpt4o",
+            "rejected_annotator_id": "llm-gpt3",
+        }
+
+    def test_minimal_valid(self) -> None:
+        d = DPOSample.model_validate(self._minimal())
+        assert d.sample_id == "target-003"
+        assert d.storage_uri is None
+
+    def test_with_storage_uri(self) -> None:
+        data = self._minimal()
+        data["storage_uri"] = "s3://bucket/frame003.jpg"
+        d = DPOSample.model_validate(data)
+        assert d.storage_uri == "s3://bucket/frame003.jpg"
+
+    def test_extra_fields_rejected(self) -> None:
+        data = self._minimal()
+        data["unexpected"] = "bad"
+        with pytest.raises(ValidationError):
+            DPOSample.model_validate(data)
+
+    def test_chosen_and_rejected_required(self) -> None:
+        data = self._minimal()
+        del data["chosen"]
+        with pytest.raises(ValidationError):
+            DPOSample.model_validate(data)
+
+    def test_model_validate_json_real_line(self) -> None:
+        """Simulate parsing a real pet-annotation DPO JSONL export line."""
+        line = json.dumps(
+            {
+                "sample_id": "target-004",
+                "chosen": "The cat is eating dry food.",
+                "rejected": "A cat.",
+                "chosen_annotator_id": "llm-v2",
+                "rejected_annotator_id": "llm-v1",
+                "storage_uri": "s3://bucket/frame004.jpg",
+            }
+        )
+        d = DPOSample.model_validate_json(line)
+        assert d.sample_id == "target-004"
+        assert d.chosen_annotator_id == "llm-v2"

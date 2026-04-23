@@ -5,7 +5,14 @@ from typing import Literal
 
 Modality = Literal["vision", "audio", "sensor", "multimodal"]
 
-SourceType = Literal["youtube", "community", "device", "synthetic"]
+SourceType = Literal[
+    "youtube",              # public web scraping (fair use / ToS)
+    "community",            # user-uploaded with consent
+    "device",               # first-party hardware captures
+    "synthetic",            # AI-generated
+    "academic_dataset",     # research datasets (MIT/Apache/CC licensed)  — NEW v3.1.0
+    "commercial_licensed",  # paid / commercially licensed datasets — NEW v3.1.0
+]
 
 
 class EdgeFormat(StrEnum):

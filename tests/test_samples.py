@@ -167,3 +167,28 @@ def test_base_sample_is_abstract_like_but_ok_to_construct():
     # introspection
     # (protects against accidental deletion of the class body later)
     assert "modality" in BaseSample.model_fields
+
+
+def test_source_info_ingester_optional_and_carries_string():
+    """SourceInfo.ingester v3.1.0: optional field, defaults None, accepts string, extra still forbidden."""
+    # backward compat: constructible without ingester
+    si_no_ingester = SourceInfo(source_type="device", source_id="feeder-001", license=None)
+    assert si_no_ingester.ingester is None
+
+    # new: constructible with ingester carrying an ingester identity string
+    si_with_ingester = SourceInfo(
+        source_type="academic_dataset",
+        source_id="oxford-003317",
+        license="CC-BY-4.0",
+        ingester="oxford_pet",
+    )
+    assert si_with_ingester.ingester == "oxford_pet"
+
+    # extra="forbid" still rejects unknown fields
+    with pytest.raises(ValidationError):
+        SourceInfo(
+            source_type="device",
+            source_id="f1",
+            license=None,
+            unknown_extra="bad",  # type: ignore[call-arg]
+        )

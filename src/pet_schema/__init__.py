@@ -1,7 +1,8 @@
-"""pet-schema 2.3.1 public API.
+"""pet-schema public API.
 
 Contracts for the multi-model pipeline: Sample / Annotation / ModelCard /
-ExperimentRecipe / EvaluationReport / Hydra Structured Configs.
+ExperimentRecipe / EvaluationReport / Hydra Structured Configs /
+Training JSONL samples (SFTSample, DPOSample, ShareGPTTurn).
 """
 from pet_schema.annotations import (
     Annotation,
@@ -52,6 +53,7 @@ from pet_schema.samples import (
     SourceInfo,
     VisionSample,
 )
+from pet_schema.training_samples import DPOSample, SFTSample, ShareGPTSFTSample, ShareGPTTurn
 from pet_schema.validator import validate_output
 from pet_schema.version import SCHEMA_VERSION
 
@@ -105,4 +107,9 @@ __all__ = [
     "BowlType",
     "Lighting",
     "SourceType",
+    # training samples (v3.2.0)
+    "SFTSample",
+    "DPOSample",
+    "ShareGPTTurn",
+    "ShareGPTSFTSample",
 ]

@@ -9,11 +9,21 @@ from pet_schema.enums import BowlType, Lighting, Modality, PetSpecies, SourceTyp
 
 
 class SourceInfo(BaseModel):
-    """Provenance information for a sample."""
+    """Provenance information for a sample.
+
+    source_type: provenance category (legal/compliance). See SourceType enum.
+    ingester: which pet-data ingester class produced this sample (free-form;
+        typically matches BaseSource.ingester_name). Optional for samples not
+        produced by a registered ingester (e.g., manually constructed for tests).
+        Added v3.1.0 for concept separation (provenance vs implementation identity).
+    source_id: identifier within the ingester's domain (e.g., YouTube video_id).
+    license: SPDX-like license string or free-form for custom terms.
+    """
 
     model_config = ConfigDict(extra="forbid")
 
     source_type: SourceType
+    ingester: str | None = None
     source_id: str
     license: str | None
 

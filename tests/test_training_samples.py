@@ -200,6 +200,7 @@ class TestDPOSample:
 
     def _minimal(self) -> dict:
         return {
+            "prompt": "Describe the scene in this image.",
             "sample_id": "target-003",
             "chosen": '{"scene":{"label":"cat_eating","confidence_overall":0.95}}',
             "rejected": '{"scene":{"label":"cat_eating","confidence_overall":0.7}}',
@@ -210,6 +211,7 @@ class TestDPOSample:
     def test_minimal_valid(self) -> None:
         d = DPOSample.model_validate(self._minimal())
         assert d.sample_id == "target-003"
+        assert d.prompt == "Describe the scene in this image."
         assert d.storage_uri is None
 
     def test_with_storage_uri(self) -> None:
@@ -230,10 +232,18 @@ class TestDPOSample:
         with pytest.raises(ValidationError):
             DPOSample.model_validate(data)
 
+    def test_prompt_required(self) -> None:
+        """prompt is required for LLaMA-Factory Alpaca DPO consumption."""
+        data = self._minimal()
+        del data["prompt"]
+        with pytest.raises(ValidationError):
+            DPOSample.model_validate(data)
+
     def test_model_validate_json_real_line(self) -> None:
         """Simulate parsing a real pet-annotation DPO JSONL export line."""
         line = json.dumps(
             {
+                "prompt": "Describe the scene in this image.",
                 "sample_id": "target-004",
                 "chosen": "The cat is eating dry food.",
                 "rejected": "A cat.",

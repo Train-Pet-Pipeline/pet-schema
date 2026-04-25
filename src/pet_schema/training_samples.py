@@ -54,6 +54,14 @@ class ShareGPTSFTSample(BaseModel):
     This is the format LLaMA-Factory's ``SharegptDatasetConverter`` expects when
     ``formatting="sharegpt"`` is used.  The top-level key ``conversations`` maps to
     ``DatasetAttr.messages`` (default ``"conversations"``).
+
+    **VLM training (v3.3.0+)**: ``images`` carries one or more image paths/URIs;
+    user turns reference them via ``<image>`` placeholder tokens. LLaMA-Factory
+    resolves ``DatasetAttr.images`` (default ``"images"``) at training time.
+    Phase 3A (2026-04-16) production format used this field; pet-schema v3.2.0
+    introduced ShareGPTSFTSample with ``extra="forbid"`` but accidentally omitted
+    ``images``, which silently regressed the VLM-training contract. v3.3.0
+    restores it (F001 in 2026-04-25 ecosystem-validation findings).
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -61,6 +69,9 @@ class ShareGPTSFTSample(BaseModel):
     conversations: list[ShareGPTTurn] = Field(min_length=1)
     system: str | None = None
     tools: str | None = None
+    # VLM image refs (v3.3.0): list of paths or URIs referenced by <image>
+    # placeholders in user turns. None / empty list = text-only SFT.
+    images: list[str] | None = None
     # Optional lineage (ignored by LLaMA-Factory, useful for debugging):
     sample_id: str | None = None
     source_target_id: str | None = None

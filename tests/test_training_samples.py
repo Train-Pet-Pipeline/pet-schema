@@ -98,9 +98,37 @@ class TestShareGPTSFTSample:
         s = ShareGPTSFTSample.model_validate(self._minimal())
         assert s.system is None
         assert s.tools is None
+        assert s.images is None
         assert s.sample_id is None
         assert s.source_target_id is None
         assert s.annotator_id is None
+
+    def test_with_images_field_vlm(self) -> None:
+        """v3.3.0 (F001): VLM training requires images field + <image> placeholder."""
+        data = self._minimal()
+        data["conversations"] = [
+            {"from": "human", "value": "<image>\ndescribe this scene"},
+            {"from": "gpt", "value": '{"pet_present": true}'},
+        ]
+        data["images"] = ["s3://bucket/frame001.jpg"]
+        s = ShareGPTSFTSample.model_validate(data)
+        assert s.images == ["s3://bucket/frame001.jpg"]
+
+    def test_images_multi_frame_vlm(self) -> None:
+        """v3.3.0: multi-image conversations supported."""
+        data = self._minimal()
+        data["conversations"] = [
+            {"from": "human", "value": "<image><image>compare these"},
+            {"from": "gpt", "value": '{"diff": "minor"}'},
+        ]
+        data["images"] = ["frame1.jpg", "frame2.jpg"]
+        s = ShareGPTSFTSample.model_validate(data)
+        assert len(s.images) == 2
+
+    def test_text_only_when_images_absent(self) -> None:
+        """text-only SFT (no <image>) still valid; images=None or omitted."""
+        s = ShareGPTSFTSample.model_validate(self._minimal())
+        assert s.images is None  # default
 
     def test_with_lineage_metadata(self) -> None:
         data = self._minimal()

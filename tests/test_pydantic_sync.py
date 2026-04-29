@@ -101,11 +101,20 @@ class TestDirection4EnumSync:
         assert schema_enum == pydantic_enum
 
     def test_food_type_enum(self, v1_schema):
+        # v3.4.0: field is Optional — JSON schema uses oneOf [null, string-enum]
+        import typing
+
         schema_enum = set(
-            v1_schema["properties"]["bowl"]["properties"]["food_type_visible"]["enum"]
+            v1_schema["properties"]["bowl"]["properties"]["food_type_visible"][
+                "oneOf"
+            ][1]["enum"]
         )
         annotation = BowlInfo.model_fields["food_type_visible"].annotation
-        pydantic_enum = set(annotation.__args__)
+        # annotation is `Literal[...] | None`; pull the Literal arm
+        args = typing.get_args(annotation)
+        literal_args = [a for a in args if a is not type(None)]
+        assert len(literal_args) == 1
+        pydantic_enum = set(typing.get_args(literal_args[0]))
         assert schema_enum == pydantic_enum
 
     def test_lighting_enum(self, v1_schema):

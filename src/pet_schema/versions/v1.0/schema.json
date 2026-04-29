@@ -102,12 +102,12 @@
     },
     "bowl": {
       "type": "object",
-      "required": ["food_type_visible"],
+      "required": [],
       "additionalProperties": false,
       "properties": {
         "food_fill_ratio": {"oneOf": [{"type": "null"}, {"type": "number", "minimum": 0.0, "maximum": 1.0}]},
         "water_fill_ratio": {"oneOf": [{"type": "null"}, {"type": "number", "minimum": 0.0, "maximum": 1.0}]},
-        "food_type_visible": {"type": "string", "enum": ["dry", "wet", "mixed", "unknown"]}
+        "food_type_visible": {"oneOf": [{"type": "null"}, {"type": "string", "enum": ["dry", "wet", "mixed", "unknown"]}]}
       }
     },
     "scene": {

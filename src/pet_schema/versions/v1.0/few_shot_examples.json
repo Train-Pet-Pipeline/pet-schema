@@ -273,5 +273,49 @@
       },
       "narrative": "画面中无宠物，光线充足，环境清洁。"
     }
+  },
+  {
+    "scene_desc": "无碗的户外宠物抓拍",
+    "output": {
+      "schema_version": "1.0",
+      "pet_present": true,
+      "pet_count": 1,
+      "pet": {
+        "species": "dog",
+        "breed_estimate": "mixed_unknown",
+        "id_tag": "brown_medium_dog",
+        "id_confidence": 0.55,
+        "action": {
+          "primary": "other",
+          "distribution": {
+            "eating": 0.00, "drinking": 0.00,
+            "sniffing_only": 0.05, "leaving_bowl": 0.00,
+            "sitting_idle": 0.10, "other": 0.85
+          }
+        },
+        "eating_metrics": {
+          "speed": {"fast": 0.00, "normal": 0.00, "slow": 0.00},
+          "engagement": 0.00,
+          "abandoned_midway": 0.00
+        },
+        "mood": {"alertness": 0.55, "anxiety": 0.10, "engagement": 0.40},
+        "body_signals": {"posture": "relaxed", "ear_position": "forward"},
+        "anomaly_signals": {
+          "vomit_gesture": 0.00, "food_rejection": 0.00,
+          "excessive_sniffing": 0.00, "lethargy": 0.00, "aggression": 0.00
+        }
+      },
+      "bowl": {
+        "food_fill_ratio": null,
+        "water_fill_ratio": null,
+        "food_type_visible": null
+      },
+      "scene": {
+        "lighting": "bright",
+        "image_quality": "clear",
+        "confidence_overall": 0.70
+      },
+      "narrative": "棕色中型犬在草地上行走，无喂食器及碗具入镜。"
+    }
   }
 ]

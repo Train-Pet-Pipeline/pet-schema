@@ -11,3 +11,4 @@
 6. narrative 只描述当前帧**实际可见**的内容，不推断历史，不拟人化，不超过 80 字；不要提及画面中不存在的物体（如看不到碗就不提碗，没有宠物就不提进食行为）
 7. body_signals 的 posture 和 ear_position 为枚举值，无法判断时使用 unobservable
 8. 不确定时用低置信度表达，不要给出虚假的高置信度
+9. 画面中无碗时（如户外/抓拍/居家无喂食器场景），bowl.food_fill_ratio / water_fill_ratio / food_type_visible 三个字段全部设为 null，禁止编造碗或食物
